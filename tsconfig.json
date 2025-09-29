@@ -1,0 +1,21 @@
+// tsconfig.json
+
+{
+  "compilerOptions": {
+    /* Estrutura do Projeto */
+    "target": "ES2022",                     /* Versão do JavaScript de saída */
+    "module": "NodeNext",                   /* Sistema de módulos para o Node.js moderno */
+    "moduleResolution": "NodeNext",         /* Estratégia de resolução de módulos */
+    "outDir": "./dist",                     /* Diretório de saída (onde o JS compilado irá) */
+    "rootDir": "./src",                     /* Diretório raiz dos seus arquivos TS */
+    
+    /* Configurações de Compilação */
+    "strict": true,                         /* Ativa todas as verificações de tipo rigorosas */
+    "esModuleInterop": true,                /* Permite importação limpa de módulos CommonJS */
+    "skipLibCheck": true,                   /* Ignora verificações de tipo em arquivos de bibliotecas */
+    "forceConsistentCasingInFileNames": true, /* Garante que as letras maiúsculas/minúsculas sejam consistentes */
+    "resolveJsonModule": true,              /* Permite importar arquivos JSON */
+    "verbatimModuleSyntax": true            /* Enforça a sintaxe moderna (ajuda com import type) */
+  },
+  "include": ["src/**/*"]                   /* Inclui todos os arquivos dentro da pasta src */
+}
