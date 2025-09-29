@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.js", 
+    "start": "node server.js", 
     "build": "tsc", 
     "dev": "node --loader ts-node/esm --experimental-specifier-resolution=node src/server.ts",
     "start:prod": "node dist/server.js", 
