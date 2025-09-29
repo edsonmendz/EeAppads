@@ -7,6 +7,7 @@ dotenv.config({ path: ".env" });
 
 import temasRoutes from "./routes/temas.js";
 import materiasRoutes from "./routes/materias.js";
+import perguntasRoutes from "./routes/perguntas.js";
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 // Rotas organizadas
 app.use("/temas", temasRoutes);
 app.use("/materias", materiasRoutes);
+app.use("/perguntas", perguntasRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
