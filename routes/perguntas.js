@@ -1,38 +1,39 @@
-// routes/perguntas.js
 import express from "express";
-import { supabase } from "../utils/supabaseClient.js";
+import { supabase } from "../utils/supabaseClient.js"; // Importa seu cliente Supabase
 
 const router = express.Router();
 
-// GET /perguntas/:materiaId?limit=10
-router.get("/:materiaId", async (req, res) => {
-  try {
-    const materiaId = Number(req.params.materiaId);
-    if (!Number.isInteger(materiaId) || materiaId <= 0) {
-      return res.status(400).json({ error: "materiaId inválido" });
+/**
+ * GET /api/perguntas/:temaId
+ * Busca todas as perguntas de um tema específico utilizando a função RPC
+ * get_perguntas_por_tema(_tema_id).
+ */
+router.get("/:temaId", async (req, res) => {
+    const temaId = parseInt(req.params.temaId);
+
+    // 1. Validação
+    if (isNaN(temaId) || temaId <= 0) {
+        return res.status(400).json({ message: "ID de Tema inválido." });
     }
 
-    // permite override via query ?qtd=5 (máximo 50)
-    const requested = req.query.qtd ? Number(req.query.qtd) : 10;
-    const qtd = Number.isNaN(requested) ? 10 : Math.max(1, Math.min(50, requested));
+    console.log(`[API] Requisição de perguntas para tema ID: ${temaId}`);
 
-    // Chama a função RPC criada no Postgres
-    const { data, error } = await supabase.rpc("get_random_perguntas", {
-      materia_id_input: materiaId,
-      qtd: qtd,
-    });
+    // 2. Chamada RPC
+    // O objeto passado para .rpc() deve ter o nome do parâmetro exato da função SQL
+    const { data, error } = await supabase
+        .rpc('get_perguntas_por_tema', { _tema_id: temaId }); 
 
     if (error) {
-      console.error("RPC error:", error);
-      return res.status(500).json({ error: error.message || error });
+        console.error("ERRO na RPC get_perguntas_por_tema:", error);
+        return res.status(500).json({ 
+            message: "Falha ao carregar as perguntas do tema.", 
+            details: error.message 
+        });
     }
 
-    // data será um array de objetos com as colunas da tabela perguntas
-    return res.json({ count: (data || []).length, perguntas: data || [] });
-  } catch (err) {
-    console.error("Erro ao buscar perguntas:", err);
-    return res.status(500).json({ error: "Erro interno" });
-  }
+    // 3. Resposta de Sucesso
+    // Retorna a lista de perguntas
+    res.json(data);
 });
 
 export default router;
